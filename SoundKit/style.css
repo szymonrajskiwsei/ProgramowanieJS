@@ -86,6 +86,12 @@
     font-weight: bold;
 }
 
+.btnStopRecording:hover
+{
+    cursor: pointer;
+    color: white;
+}
+
 #btnPlay
 {
     background-color: goldenrod;
