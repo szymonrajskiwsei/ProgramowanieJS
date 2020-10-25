@@ -1,0 +1,101 @@
+*
+{
+    margin: 0;
+    padding: 0;
+    font-family: Tahoma;
+}
+
+.box
+{
+    display: inline-block;
+}
+
+.soundBox
+{
+    width: 80%;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 5%;
+    background-color: lightgray;
+}
+
+.soundTable
+{
+    margin-left: auto;
+    margin-right: auto;
+    padding: 20px;
+}
+
+.soundTd
+{
+    padding: 5px;
+}
+
+.sound
+{
+    width: 100px;
+}
+
+.soundDesc
+{
+    text-align: center;
+    margin: 5px;
+    font-weight: bold;
+    color: royalblue;
+}
+
+.soundDesc strong
+{
+    color: red;
+}
+
+.buttonsRecord
+{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 10px;
+    width: 80%;
+    margin-left: auto;
+    margin-right: auto;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    background-color: lightblue;
+}
+
+.btnStartRecording
+{
+    background-color: green;
+    padding: 5px;
+    border-radius: 5px;
+    margin: 10px;
+    font-weight: bold;
+}
+.btnStartRecording:hover
+{
+    cursor: pointer;
+    color: white;
+}
+
+.btnStopRecording
+{
+    background-color: red;
+    padding: 5px;
+    border-radius: 5px;
+    margin: 10px;
+    font-weight: bold;
+}
+
+#btnPlay
+{
+    background-color: goldenrod;
+    padding: 5px;
+    border-radius: 5px;
+    margin: 10px;
+    font-weight: bold;
+}
+#btnPlay:hover
+{
+    cursor: pointer;
+    color: white;
+}
