@@ -9,7 +9,7 @@
 <body>
 
     <div class="pageTitle">
-        <h1>Note Pocket</h1>
+        <h1>Note Pocket <span id="titleSpan">+</span></h1>
     </div>
     <div class="actionMenu">
         <button id="btnNewNote">Add note</button>
@@ -23,10 +23,28 @@
             <h3 class="hNewNote">Create new note</h3>
             <form>
                 <p>Name</p>
-                <input id="noteName" type="text">
+                <input id="noteTitle" type="text">
                 <p>Content</p>
                 <textarea id="noteContent"></textarea>
+                <p>Color</p>
+                <input id="noteColor" type="text">
+                <p id="pImportant">Important</p>
+                <input id="pin" type="checkbox">
                 <button id="btnAddNote">Create new note</button>
+            </form>
+        </div>
+    </div>
+
+    <div class="modalEdit hiddenEdit">
+        <div class="modal__edit__contents">
+            <div class="modal__edit__close-bar">
+                <span>x</span>
+            </div>
+            <h3 class="hNewNote">Edit note content</h3>
+            <form>
+                <p>New content</p>
+                <textarea id="noteEditContent"></textarea>
+                <button id="btnEditNote">Apply</button>
             </form>
         </div>
     </div>
