@@ -10,7 +10,7 @@ if(notes == null)
 
 class Note
 {
-    constructor(title, content, color, pinned, date)
+    constructor(title, content, color, pinned)
     {
         this.title = title;
         this.content = content;
