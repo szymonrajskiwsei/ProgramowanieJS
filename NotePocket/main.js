@@ -8,14 +8,31 @@ if(notes == null)
     localStorage.setItem(localStorageNotesKey, JSON.stringify([]));
 }
 
-class Note{
+class Note
+{
     constructor(title, content, color, pinned, date)
     {
         this.title = title;
         this.content = content;
         this.color = color;
         this.pinned = pinned;
-        this.date = date;
+        this.date = new Date();
+    }
+}
+
+class PrintNotes
+{
+    constructor(notes)
+    {
+        this.notes = notes;
+    }
+
+    printNotes()
+    {
+        for(let note of notes)
+        {
+            addNote(note);     
+        }
     }
 }
 
@@ -28,31 +45,17 @@ function onNewNote()
     const color = document.querySelector('#noteColor').value;
     let pin = document.querySelector('#pin');
     let isPinned = false;
-
     if(pin.checked) isPinned = true;
 
-    const note =
-    {
-        title: title,
-        content: content,
-        color: color,
-        pinned: isPinned,
-        createDate: new Date()
-    }
+    note = new Note(title, content, color, isPinned, new Date);
 
     notes.push(note);
     localStorage.setItem(localStorageNotesKey, JSON.stringify(notes));
     addNote(note);
 }
 
-const toggleModal = () => 
-{
-    document.querySelector('.modal').classList.toggle('hidden');
-}
-const toggleModalEdit = () => 
-{
-    document.querySelector('.modalEdit').classList.toggle('hiddenEdit');
-}
+const toggleModal = () => { document.querySelector('.modal').classList.toggle('hidden'); }
+const toggleModalEdit = () => { document.querySelector('.modalEdit').classList.toggle('hiddenEdit'); }
 
 document.querySelector('#btnAddNote').addEventListener('click', onNewNote);
 document.querySelector('#btnNewNote').addEventListener('click', toggleModal);
@@ -104,18 +107,11 @@ function addNote(note)
     const otherNotes = document.querySelector('.otherNotes');
     const importantNotes = document.querySelector('.importantNotes');
 
-    if(note.pinned)
-    {
-        importantNotes.appendChild(htmlSection);
-    }
-    else
-    {
-        otherNotes.appendChild(htmlSection);
-    }
+    if(note.pinned) importantNotes.appendChild(htmlSection);
+    else otherNotes.appendChild(htmlSection);
 
     btnDelete.addEventListener('click', () => deleteNote(note, notes, htmlSection));
     btnPin.addEventListener('click', () => pinNote(note, htmlSection));
-    //btnEdit.addEventListener('click', toggleModalEdit);
     btnEdit.addEventListener('click', () => editNote(note, htmlSection));
 }
 
@@ -148,16 +144,5 @@ function pinNote(myNote, objHtmlNote)
     addNote(myNote);
 }
 
-
-function printNotes()
-{
-    for(let note of notes)
-    {
-        addNote(note);     
-    }
-}
-
-printNotes();
-
-// usuwanie elementów
-// main.removeChild();
+let show = new PrintNotes(notes);
+show.printNotes();

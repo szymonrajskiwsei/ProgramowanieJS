@@ -4,9 +4,18 @@ document.querySelector('#btnPlay').addEventListener('click', playChannel);
 
 let isRecording = false;
 
-// dorobić guzik rozpoczęcia nagrywania
 const channel = [];
+const channelArray = []; //"boom", "clap", "hihat", "kick", "openhat", "ride", "snare", "tink", "tom"
 let recordStart = Date.now();
+
+class RecorderSound
+{
+    constructor(soundName, time)
+    {
+        this.SoundName = soundName;
+        this.Time = time;
+    }
+}
 
 function onKeyPress(ev)
 {
@@ -64,17 +73,11 @@ function onKeyPress(ev)
         if(isRecording)
         {
             const keyPressTime = Date.now() - recordStart;
-            const recordedSound = 
-            {
-                sound: soundname,
-                time: keyPressTime
-            };
-        
-            channel.push(recordedSound);
+            let newSound = new RecorderSound(soundname, keyPressTime);
+
+            channel.push(newSound);
         }       
         sound.play();
-
-        //!!settimeout!! setinterval odtwarzanie pełnych dzwięków z tablicy
     }
 }
 
@@ -104,13 +107,13 @@ function playChannel()
     {
         const soundObject = channel[i];
 
-        if(i == 0) playSound(soundObject.sound);
+        if(i == 0) playSound(soundObject.SoundName);
         else
         {
             setTimeout( () =>
             {
-                playSound(soundObject.sound);
-            }, soundObject.time)
+                playSound(soundObject.SoundName);
+            }, soundObject.Time)
         }      
     }
 }
