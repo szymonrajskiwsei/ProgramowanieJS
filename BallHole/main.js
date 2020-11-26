@@ -10,15 +10,24 @@ let alpha = 0;
 const x = setInterval(() => {
     let ball = document.querySelector('.ball');
     let currentPosY = parseInt(ball.style.top);
+    let currentPosX = parseInt(ball.style.left);
 
     if(beta > 0)
     {
         ball.style.top = `${currentPosY + 1}px`;
     }
-    else if(beta < 0)
+    if(beta < 0)
     {
         if(ball.style.top < 0) board.removeChild(playerBall);
         ball.style.top = `${currentPosY - 1}px`;
+    }
+    if(gamma < 0)
+    {
+        ball.style.left = `${currentPosX - 1}px`;
+    }
+    if(gamma > 0)
+    {
+        ball.style.left = `${currentPosX + 1}px`;
     }
 }, 10);
 
@@ -26,7 +35,7 @@ function onDeviceMove(ev)
 {
     beta = ev.beta;
     gamma = ev.gamma;
-    alpha = 0;
+    alpha = ev.alpha;
 }
 
 class Ball
@@ -36,8 +45,8 @@ class Ball
         let b = document.createElement('div');
         b.classList.add('ball');
 
-        b.style.top = "10px";
-        b.style.left = "570px";
+        b.style.top = "290px";
+        b.style.left = "290px";
 
         board.appendChild(b);
     }
@@ -102,6 +111,7 @@ let ball = document.querySelector('.ball');
 
 const checkCollision = setInterval(() => {
 
+    
     for(let i = 0; i < holes.length; i++)
     {
         let kulaY = (parseInt(ball.style.top) + 10);
@@ -133,7 +143,7 @@ setInterval(() => {
     {
         seconds++;
     }
-    if(seconds < 10) timeBar.innerHTML = minutes + ":" + "0" + seconds;
-    else timeBar.innerHTML = minutes + ":" + seconds;
+    if(seconds < 10) timeBar.innerHTML = "Czas gry " + minutes + ":" + "0" + seconds;
+    else timeBar.innerHTML = "Czas gry " + minutes + ":" + seconds;
 
 }, 1000);

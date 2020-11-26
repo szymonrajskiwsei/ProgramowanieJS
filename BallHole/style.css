@@ -11,7 +11,7 @@ body
 
 .hole
 {
-    background-color: khaki;
+    background: radial-gradient(darkgrey, black);
     border-radius: 50%;
     width: 60px;
     height: 60px;
