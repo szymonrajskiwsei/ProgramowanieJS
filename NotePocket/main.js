@@ -20,6 +20,8 @@ class Note
     }
 }
 
+addNote(new Note("title", "content", "black", true, new Date()));
+
 class PrintNotes
 {
     constructor(notes)
@@ -94,7 +96,7 @@ function addNote(note)
 
     htmlTitle.innerHTML = note.title;
     htmlContent.innerHTML = note.content;
-    htmlDate.innerHTML = "Utworzono: " + note.createDate.toLocaleString();
+    //htmlDate.innerHTML = "Utworzono: " + note.createDate.toLocaleString();
 
     htmlSection.appendChild(htmlTitle);
     htmlSection.appendChild(htmlDate);
