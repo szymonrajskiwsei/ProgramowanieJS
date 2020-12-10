@@ -1,0 +1,36 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+html {
+    min-height: 100%;
+}
+
+body {
+    background: linear-gradient(cadetblue, cadetblue, white);
+}
+
+.info {
+    background-image: linear-gradient(to right, cadetblue, cadetblue, white, cadetblue, cadetblue);
+    margin: 20px 100px 0px 100px;
+    height: 60px;
+    text-align: center;
+    line-height: 60px;
+}
+
+.btnAddCity {
+    margin: auto;
+    width: 60px;
+    height: 30px;
+}
+
+.btnAddCity:hover {
+    background-color: bisque;
+    cursor: pointer;
+}
+
+input[type="text"] {
+    text-align: center;
+    margin: 2px;
+}

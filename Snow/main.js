@@ -23,7 +23,7 @@ class Snowflake
 
 window.onload = function ()
 {
-    let max = 10;
+    let max = 50;
     
     for (var i = 0; i < max; i++) {
       snowflakes.push({
