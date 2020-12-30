@@ -3,6 +3,7 @@
     padding: 0;
     box-sizing: border-box;
 }
+
 body {
     font-family: sans-serif;
 }
@@ -15,4 +16,41 @@ body {
     border: 1px solid #ddd;
     padding: 1rem 2rem;
     margin: 1rem auto;
+}
+
+.weatherCard__first {
+    flex: 1;
+}
+.weatherCard__second { 
+    flex: 1;
+}
+
+.weatherCard__list {
+    list-style: none;
+    width: 100%;
+}
+
+.weatherCard__list-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.weatherCard__delete {
+    padding: 8px 12px;
+    border: 1px solid #ddd;
+    border-radius: 3px;
+    margin: 1rem auto;
+    max-width: 80px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: .3s all ease;
+    cursor: pointer;
+}
+
+.weatherCard__delete:hover {
+    background: #f00;
+    color: #fff;
+    border-color: #fff;
 }
