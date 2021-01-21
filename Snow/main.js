@@ -1,131 +1,76 @@
-let snowflakes = [50];
-let canvas = document.getElementById("field");
-let ctx = canvas.getContext("2d");
+const field = document.getElementById('field');
+const ctx = field.getContext('2d');
 
-let height = window.innerHeight;
-let width = window.innerWidth;
-
-canvas.width = 1530;
-canvas.height = 700;
+field.width = window.innerWidth;
+field.height = window.innerHeight;
 
 class Snowflake
 {
-    Draw()
+    constructor(diameter, quantity)
     {
-
+        this.snowflakes = [];
+        this.diameter = diameter;
+        this.speed = 0;
+        this.quantity = quantity;
+        this.draw();
     }
 
-    FallDown()
+    draw()
     {
-
-    }
-}
-
-window.onload = function ()
-{
-    let max = 50;
-    
-    for (var i = 0; i < max; i++) {
-      snowflakes.push({
-        x: Math.random() * width,
-        y: Math.random() * height,
-        r: Math.random() * 7 + 1,
-        d: Math.random() * 100,
-      });
-    }
-  
-    function draw() {
-      ctx.clearRect(0, 0, width, height);
-      ctx.fillStyle = "rgba(255,255,255,0.5)";
-      ctx.beginPath();
-  
-      for (var i = 0; i < max; i++) {
-        var s = snowflakes[i];
-        ctx.moveTo(s.x, s.y);
-        ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2, true);
-      }
-  
-      ctx.fill();
-      update();
-    }
-  
-    var angle = 0;
-    function update() {
-      angle += 0.05;
-      for (var i = 0; i < max; i++) {
-        var s = snowflakes[i];
-  
-        s.y += Math.cos(angle + s.d) + 1 + s.r / 2;
-        s.x += Math.sin(angle) * 2;
-  
-        if (s.x > width + 5 || s.x < -5 || s.y > height) {
-          if (i % 3 > 0) {
-            snowflakes[i] = {
-              x: Math.random() * width,
-              y: -10,
-              r: s.r,
-              d: s.d,
-            };
-          } else {
-            if (Math.sin(angle) > 0) {
-              snowflakes[i] = {
-                x: -5,
-                y: Math.random() * width,
-                r: s.r,
-                d: s.d,
-              };
-            } else {
-              snowflakes[i] = {
-                x: width + 5,
-                y: Math.random() * width,
-                r: s.r,
-                d: s.d,
-              };
-            }
-          }
-        }
-      }
-    }
-  
-    setInterval(draw, 30);
-  };
-
-/*const sky = document.body;
-
-class Snowflake
-{
-    CreateSnowflake()
-    {
-        let spawnRange = window.innerWidth;
-        let startPositionX = Math.floor(Math.random() * spawnRange);
-
-        let snowflake = document.createElement('canvas');
-        snowflake.className = "snowflake";
-        snowflake.classList.add('snowflake');
-        snowflake.style.left = `${startPositionX}px`;
-        sky.appendChild(snowflake);
-    }
-
-    DeleteSnowflake()
-    {
-        let snowflake = sky.getElementsByTagName('canvas')[0];
-        sky.removeChild(snowflake);
-    }
-
-    FallSnowflake()
-    {
-        let allSnowflakes = sky.getElementsByTagName('canvas');
-        for (let i = 0; i < allSnowflakes.length; i++)
+        for (let i = 0; i < this.quantity; i++)
         {
-            allSnowflakes[i].style.top += `${50}px`;
+            let x = Math.floor(Math.random() * window.innerWidth);
+            let y = Math.floor(Math.random() * window.innerHeight);
+
+            ctx.beginPath();
+            this.snowflakes.push({x, y, shift: (Math.random() * 4) - 2, speed: (Math.random() * 2) + 3});
+            
+            ctx.arc(this.snowflakes[i].x, this.snowflakes[i].y, this.diameter, 0, (Math.PI * 2), true);
+            ctx.fillStyle = 'white';
+            ctx.fill();
+        }        
+    }
+
+    moveDown()
+    {
+        ctx.clearRect(0, 0, innerWidth, innerHeight);
+
+        for (let i = 0; i < this.snowflakes.length; i++)
+        {
+            ctx.beginPath();
+            ctx.arc(this.snowflakes[i].x += this.snowflakes[i].shift,
+                    this.snowflakes[i].y += this.snowflakes[i].speed,
+                    this.diameter, 0, (Math.PI * 2), true);
+
+            ctx.fillStyle = 'white';
+            ctx.fill();
+        }
+    }
+
+    moveToUp()
+    {
+        for (let i = 0; i < this.snowflakes.length; i++)
+        {
+            if (this.snowflakes[i].y >= field.height)
+            {
+                this.snowflakes[i].y = -15;
+            }
+        }
+    }
+
+    movementToTheSide()
+    {
+        for (let i = 0; i < this.snowflakes.length; i++)
+        {
+            if (this.snowflakes[i].x < -10) this.snowflakes[i].x = field.width + 10;
+            if (this.snowflakes[i].x > field.width + 10) this.snowflakes[i].x = -10;
         }
     }
 }
 
-setInterval( function(){
-    if (snowflakeCounter % 2 == 0) x.CreateSnowflake();
-    if (snowflakeCounter % 3 == 0) x.DeleteSnowflake();
-
-    snowflakeCounter++;
-    x.FallSnowflake();
-}, 200 );*/
+const snowflake = new Snowflake(5, 100);
+setInterval(() => {
+    snowflake.moveDown();
+    snowflake.moveToUp();
+    snowflake.movementToTheSide();
+}, 20);
