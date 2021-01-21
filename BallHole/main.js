@@ -1,149 +1,124 @@
-window.addEventListener('deviceorientation', onDeviceMove);
-
-const board = document.querySelector('#playBoard');
-const ballSpeed = 10;
+const board = document.getElementById('board');
+board.width = window.innerWidth / 2;
+board.height = window.innerHeight / 2;
 
 let beta = 0;
 let gamma = 0;
 let alpha = 0;
 
-const x = setInterval(() => {
-    let ball = document.querySelector('.ball');
-    let currentPosY = parseInt(ball.style.top);
-    let currentPosX = parseInt(ball.style.left);
-
-    if(beta > 0)
-    {
-        ball.style.top = `${currentPosY + 1}px`;
-    }
-    if(beta < 0)
-    {
-        if(ball.style.top < 0) board.removeChild(playerBall);
-        ball.style.top = `${currentPosY - 1}px`;
-    }
-    if(gamma < 0)
-    {
-        ball.style.left = `${currentPosX - 1}px`;
-    }
-    if(gamma > 0)
-    {
-        ball.style.left = `${currentPosX + 1}px`;
-    }
-}, 10);
-
-function onDeviceMove(ev)
-{
-    beta = ev.beta;
-    gamma = ev.gamma;
-    alpha = ev.alpha;
-}
+const ctx = board.getContext('2d');
+let game = true;
 
 class Ball
 {
-    createBall()
+    constructor(speed, diameter, x, y)
     {
-        let b = document.createElement('div');
-        b.classList.add('ball');
-
-        b.style.top = "290px";
-        b.style.left = "290px";
-
-        board.appendChild(b);
+        this.x = x;
+        this.y = y;
+        this.speed = speed;
+        this.diameter = diameter;
     }
 
-    moveDown(speed)
+    draw()
     {
-        setInterval(() => {
-            let ball = document.querySelector('.ball');
-            let currentPosY = parseInt(ball.style.top);
-            ball.style.top = `${currentPosY + speed * 0.05}px`;
-        }, 200);
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.diameter / 2, 0, Math.PI * 2, true);
+        ctx.fillStyle = 'red';
+        ctx.fill();
     }
 
-    moveUp(speed)
+    move()
     {
-        setInterval(() => {
-            let ball = document.querySelector('.ball');
-            let currentPosY = parseInt(ball.style.top);
-            ball.style.top = `${currentPosY - speed * 0.05}px`;
-        }, 200);
+        this.x += gamma * 0.05;
+        this.y += beta * 0.05;
     }
 
-    moveLeft(speed)
+    checkAngle(ev)
     {
-        let ball = document.querySelector('.ball');
-        let currentPosX = parseInt(ball.style.left);
-        ball.style.left = `${currentPosX - speed}px`;
-    }
-
-    moveRight(speed = 5)
-    {
-        let ball = document.querySelector('.ball');
-        let currentPosX = parseInt(ball.style.left);
-        ball.style.left = `${currentPosX + speed}px`;
+        beta = ev.beta;
+        gamma = ev.gamma;
+        alpha = ev.alpha;
     }
 }
 
 class Hole
 {
-    constructor()
+    constructor(diameter, quantity)
     {
-        const min = 30;
-        const maxWidth = board.clientWidth;
-        const maxHeight = board.clientHeight;
+        this.board = board;
+        this.holes = [];
+        this.diameter = diameter;
+        this.quantity = quantity;
+    }
 
-        let h = document.createElement('div');
-        h.classList.add('hole');
+    draw()
+    {
+        for (let i = 0; i < this.quantity; i++)
+        {
+            let x = Math.floor(Math.random() * window.innerWidth / 2);
+            let y = Math.floor(Math.random() * window.innerHeight / 2);
 
-        Math.random()
-        h.style.top = `${Math.floor(Math.random() * (maxHeight - min))}px`;
-        h.style.left = `${Math.floor(Math.random() * (maxWidth - min))}px`;
-        
-        board.appendChild(h);
+            ctx.beginPath();
+            this.holes.push({x, y, diameter: this.diameter, shift: (Math.random() * 6) - 3, speed: Math.random() + 1});
+            
+            ctx.arc(this.holes[i].x, this.holes[i].y, this.diameter / 2, 0, (Math.PI * 2), true);
+            ctx.fillStyle = 'black';
+            ctx.fill();
+        }
+
+        console.log(this.holes);
+    }
+
+    move()
+    {
+        for (let i = 0; i < this.holes.length; i++)
+        {
+            if (this.holes[i].y > window.innerHeight / 2 + 15) this.holes[i].y = -15;
+
+            if (this.holes[i].x < -15) this.holes[i].x = window.innerWidth / 2 + 15;
+            if (this.holes[i].x > window.innerWidth / 2 + 15) this.holes[i].x = -15;
+
+            ctx.beginPath();
+            ctx.arc(this.holes[i].x += this.holes[i].shift,
+                    this.holes[i].y += this.holes[i].speed,
+                    this.diameter / 2, 0, (Math.PI * 2), true);
+
+            ctx.fillStyle = 'black';
+            ctx.fill();           
+        }
+    }
+
+    checkCollision(ball)
+    {
+        let ballXCenter = ball.x + ball.diameter / 2;
+        let ballYCenter = ball.y + ball.diameter / 2;
+
+        for (let i = 0; i < this.holes.length; i++)
+        {
+            let distanse = Math.sqrt(Math.pow(ballXCenter - this.holes[i].x + 7.5, 2) + Math.pow(ballYCenter - this.holes[i].y + 7.5, 2));
+            if (distanse <= ball.diameter / 2 + this.holes[i].diameter / 2)
+            {
+                console.log('wpadło');
+                game = false;
+            }
+        }
     }
 }
 
-const holes = [new Hole(), new Hole(), new Hole(), new Hole(), new Hole()];
-const playerBall = new Ball();
-playerBall.createBall();
+const ball = new Ball(2, 10, board.width / 2, board.height / 2);
+const hole = new Hole(30, 6);
 
-let ball = document.querySelector('.ball');
-
-const checkCollision = setInterval(() => {
-
-    
-    for(let i = 0; i < holes.length; i++)
-    {
-        let kulaY = (parseInt(ball.style.top) + 10);
-        let kulaX = (parseInt(ball.style.left) + 10);
-
-        let dziuraY = (parseInt(document.querySelectorAll('.hole')[i].style.top) + 30);
-        let dziuraX = (parseInt(document.querySelectorAll('.hole')[i].style.left) + 30);
-
-        if(Math.abs(kulaX - dziuraX) < 35 && Math.abs(kulaY - dziuraY) < 35)
-        {
-            board.removeChild(ball);
-            clearInterval(checkCollision);
-        }
-    }
-}, 100);
-
-const timeBar = document.querySelector('.timeInfo');
-let seconds = 0;
-let minutes = 0;
+hole.draw();
 
 setInterval(() => {
-
-    if(seconds == 59)
+    ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
+    if (game)
     {
-        minutes++;
-        seconds = 0;
-    }
-    else
-    {
-        seconds++;
-    }
-    if(seconds < 10) timeBar.innerHTML = "Czas gry " + minutes + ":" + "0" + seconds;
-    else timeBar.innerHTML = "Czas gry " + minutes + ":" + seconds;
+        ball.draw();
+        ball.move();
+        hole.move();
+        hole.checkCollision(ball);
+    }   
+}, 20);
 
-}, 1000);
+window.addEventListener('deviceorientation', ev => ball.checkAngle(ev));
