@@ -3,20 +3,10 @@
     padding: 0;
 }
 
-html {
-    min-height: 100%;
+body{
+    overflow: hidden;
 }
 
-body {
-    background: linear-gradient(black, blue, grey);
-}
-
-.snowflake
-{
-    position: absolute;
-    width: 20px;
-    height: 20px;
-    border-radius: 50%;
-    border: 2px solid black;
-    background: linear-gradient(white, grey);
+#field {
+    background-image: linear-gradient(to bottom, blue, dodgerblue, lightblue, white);
 }
